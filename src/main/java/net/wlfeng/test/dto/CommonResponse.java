@@ -27,8 +27,8 @@ public class CommonResponse<T> implements Serializable {
         this.data = data;
     }
 
-    public static CommonResponse success(String message) {
-        return success(message, null);
+    public static <T> CommonResponse success() {
+        return success(null, null);
     }
 
     public static <T> CommonResponse success(T data) {

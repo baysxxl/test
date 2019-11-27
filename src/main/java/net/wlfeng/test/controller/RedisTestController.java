@@ -26,7 +26,7 @@ public class RedisTestController {
     public CommonResponse delayQueueTest(@RequestBody String value) {
         log.info("======推送信息到延迟队列,信息内容:{}======", value);
         redissonService.pushToDelayQueue(KeyConstant.DELAY_QUEUE_KEY, value);
-        return CommonResponse.success("ok");
+        return CommonResponse.success();
     }
 
     @ResponseBody
@@ -34,7 +34,7 @@ public class RedisTestController {
     public CommonResponse redissonPutTest(@RequestParam("key") String key, @RequestParam("value") String value) {
         log.info("======推送信息到redisson,key:{},value:{}======", key, value);
         redissonService.put(key, value);
-        return CommonResponse.success("ok");
+        return CommonResponse.success();
     }
 
     @ResponseBody
