@@ -1,9 +1,9 @@
-package net.wlfeng.test.redis.service;
+package net.wlfeng.test.service;
 
 /**
  * @author weilingfeng
  * @date 2019/11/26 10:09
- * @description
+ * @description redisson相关服务
  */
 public interface RedissonService {
 

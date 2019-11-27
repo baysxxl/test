@@ -1,8 +1,8 @@
 package net.wlfeng.test.schedule;
 
 import lombok.extern.slf4j.Slf4j;
-import net.wlfeng.test.redis.constant.KeyConstant;
-import net.wlfeng.test.redis.service.RedissonService;
+import net.wlfeng.test.constant.KeyConstant;
+import net.wlfeng.test.service.RedissonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

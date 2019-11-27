@@ -1,4 +1,4 @@
-package net.wlfeng.test.redis.constant;
+package net.wlfeng.test.constant;
 
 /**
  * @author weilingfeng
