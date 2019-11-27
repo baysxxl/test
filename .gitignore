@@ -1,0 +1,6 @@
+.idea/
+.mvn/
+**/logs/
+**/*.iml
+**/target/
+**/local/
