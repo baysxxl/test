@@ -1,6 +1,7 @@
 package net.wlfeng.test.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.dal.domain.User;
 import net.wlfeng.test.dto.CommonResponse;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -42,6 +45,19 @@ public class MybatisPlusTestController {
     public CommonResponse<UserDTO> queryUser(@RequestParam("id") Integer id) {
         log.info("===进入查询用户信息controller,请求参数:{}===", id);
         return CommonResponse.success(userService.selectById(id));
+    }
+
+    /**
+     * 查询该名字最新一条用户信息
+     * @param name
+     * @return
+     */
+    @GetMapping("queryOne")
+    public CommonResponse<UserDTO> queryUserOne(@RequestParam("name") String name) {
+        log.info("===进入查询最新一条用户信息controller,请求参数:{}===", name);
+        EntityWrapper wrapper = new EntityWrapper();
+        wrapper.eq("name", name).orderBy("id").last("desc limit 1");
+        return CommonResponse.success(userService.selectOne(wrapper));
     }
 
     /**
