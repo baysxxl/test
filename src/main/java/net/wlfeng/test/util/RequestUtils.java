@@ -1,4 +1,4 @@
-package net.wlfeng.test.utils;
+package net.wlfeng.test.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -13,7 +13,7 @@ import java.util.Map;
  * @date 2019/11/2 12:00
  * @description
  */
-public class RequestUtil {
+public class RequestUtils {
 
     public static String getParams(BodyReaderHttpServletRequestWrapper request) throws IOException {
         JSONObject result = new JSONObject();
