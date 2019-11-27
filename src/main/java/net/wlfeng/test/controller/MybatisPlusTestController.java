@@ -52,7 +52,7 @@ public class MybatisPlusTestController {
     @PostMapping("add")
     public CommonResponse<Boolean> add(@RequestBody @Validated UserDTO userDTO) {
         log.info("===进入新增用户信息controller,请求参数:{}===", JSON.toJSONString(userDTO));
-        CommonResponse<Boolean> response = CommonResponse.success(true);
+        CommonResponse<Boolean> response = null;
         RLock lock = redissonClient.getLock(USER_ADD_KEY + userDTO.getName());
         try {
             log.info("===isLocked:{}===", lock.isLocked());
@@ -60,7 +60,7 @@ public class MybatisPlusTestController {
             if (lock.tryLock(0, 5, TimeUnit.SECONDS)) {
                 User user = new User();
                 BeanUtils.copyProperties(userDTO, user);
-                response.setSuccess(userService.insert(user));
+                response = CommonResponse.success(userService.insert(user));
             } else {
                 response = CommonResponse.fail("请勿重新请求");
             }
