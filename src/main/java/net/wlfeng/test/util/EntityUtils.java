@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author weilingfeng
  * @date 2019/11/27 19:22
- * @description
+ * @description 实体类工具集合
  */
 @Slf4j
 public class EntityUtils {
