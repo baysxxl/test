@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author weilingfeng
  * @date 2019/11/2 12:00
- * @description
+ * @description http request工具类
  */
 public class RequestUtils {
 

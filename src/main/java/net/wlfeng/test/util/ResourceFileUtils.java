@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 /**
  * @author weilingfeng
  * @date 2019/10/21 10:23
- * @description
+ * @description 资源文件工具类
  */
 public class ResourceFileUtils {
     /**
