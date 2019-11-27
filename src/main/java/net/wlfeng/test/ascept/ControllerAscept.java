@@ -1,5 +1,7 @@
 package net.wlfeng.test.ascept;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -39,7 +41,7 @@ public class ControllerAscept {
 	public void afterReturning(Object response) {
 		if (log.isDebugEnabled()) {
 			// 打印返回值信息
-			log.debug("======Response:[{}]",response );
+			log.debug("======Response:[{}]", JSON.toJSONString(response, SerializerFeature.WriteMapNullValue));
 		}
 		// 打印请求耗时
 		log.info("======Request end, spend times : [{}ms]======", System.currentTimeMillis() - startTime.get());
