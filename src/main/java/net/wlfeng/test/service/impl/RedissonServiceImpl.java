@@ -1,7 +1,7 @@
-package net.wlfeng.test.redis.service.impl;
+package net.wlfeng.test.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import net.wlfeng.test.redis.service.RedissonService;
+import net.wlfeng.test.service.RedissonService;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RBucket;
 import org.redisson.api.RDelayedQueue;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
