@@ -52,7 +52,7 @@ public class PDFUtils {
      * @param dataMap
      * @return
      */
-    public static ResponseEntity<?> export(String outFileName, String ftlPath, Map<String, Object> dataMap) {
+    public static ResponseEntity<?> export(String outFileName, String ftlPath, Map<String, String> dataMap) {
         /**
          * 数据导出(PDF 格式)
          */
@@ -89,7 +89,7 @@ public class PDFUtils {
      *                    例如: "templates/pdf_export_demo.ftl"
      * @return
      */
-    public static String freemarkerRender(Map<String, Object> dataMap, String ftlFilePath) {
+    public static String freemarkerRender(Map<String, String> dataMap, String ftlFilePath) {
         Writer out = new StringWriter();
         configuration.setDefaultEncoding("UTF-8");
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);

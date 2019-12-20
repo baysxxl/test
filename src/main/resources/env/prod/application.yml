@@ -5,7 +5,7 @@ spring:
     name: test
   profiles:
     active: dev
-    include: redis,mybatisplus,oss
+    include: redis,mybatisplus,oss,pay
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT
@@ -14,3 +14,5 @@ spring:
 logging:
   level:
     net.wlfeng.test: INFO
+pdf:
+  ftlPath: templates/user.ftl
