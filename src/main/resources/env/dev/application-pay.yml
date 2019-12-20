@@ -1,0 +1,7 @@
+pay:
+  wechat:
+    appId: wx****32
+    mchId: 15****71
+    key: 7b*******xV
+    certPath: cert/apiclient_cert.p12
+    notifyUrl: https://test.wlfeng.net/pay/notice

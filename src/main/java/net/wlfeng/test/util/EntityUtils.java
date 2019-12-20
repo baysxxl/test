@@ -1,9 +1,9 @@
 package net.wlfeng.test.util;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,16 +18,13 @@ public class EntityUtils {
      * @param object
      * @return
      */
-    public static Map<String, Object> entityToMap(Object object) {
-        Map<String, Object> map = new HashMap();
+    public static Map<String, String> entityToMap(Object object) {
+        if (object == null) {
+            return null;
+        }
+        Map<String, String> map = null;
         try {
-            for (Field field : object.getClass().getDeclaredFields()){
-                boolean flag = field.isAccessible();
-                field.setAccessible(true);
-                Object o = field.get(object);
-                map.put(field.getName(), o);
-                field.setAccessible(flag);
-            }
+            map = JSONObject.parseObject(JSONObject.toJSONString(object), new TypeReference<Map<String, String>>(){});
         } catch (Exception e) {
             log.error("===实体类转map异常,异常信息:{}===", e.getMessage());
         }
@@ -37,30 +34,19 @@ public class EntityUtils {
     /**
      * Map转实体类
      * @param map 需要初始化的数据，key字段必须与实体类的成员名字一样，否则赋值为空
-     * @param entity  需要转化成的实体类
+     * @param type  需要转化成的实体类类型
      * @return
      */
-    public static <T> T mapToEntity(Map<String, Object> map, Class<T> entity) {
-        T t = null;
+    public static <T> T mapToEntity(Map<String, String> map, TypeReference<T> type) {
+        if (map == null) {
+            return null;
+        }
+        T obj = null;
         try {
-            t = entity.newInstance();
-            for(Field field : entity.getDeclaredFields()) {
-                if (map.containsKey(field.getName())) {
-                    boolean flag = field.isAccessible();
-                    field.setAccessible(true);
-                    Object object = map.get(field.getName());
-                    if (object!= null && field.getType().isAssignableFrom(object.getClass())) {
-                        field.set(t, object);
-                    }
-                    field.setAccessible(flag);
-                }
-            }
-            return t;
-        } catch (IllegalAccessException e) {
-            log.error("===map转实体类异常,异常信息:{}===", e.getMessage());
-        } catch (InstantiationException e) {
+            obj = JSONObject.parseObject(JSONObject.toJSONString(map), type);
+        } catch (Exception e) {
             log.error("===map转实体类异常,异常信息:{}===", e.getMessage());
         }
-        return t;
+        return obj;
     }
 }
