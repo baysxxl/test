@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class ControllerAscept {
 
 	// 用来记录请求进入的时间，防止多线程时出错，这里用了ThreadLocal
-	ThreadLocal<Long> startTime = new ThreadLocal<>();
+	private static ThreadLocal<Long> startTime = new ThreadLocal<>();
 
 	@Pointcut("execution(* net.wlfeng.test.controller..*.*(..))")
 	public void pointCut() {}
@@ -45,6 +45,7 @@ public class ControllerAscept {
 		}
 		// 打印请求耗时
 		log.info("======Request end, spend times : [{}ms]======", System.currentTimeMillis() - startTime.get());
+		startTime.remove();
 	}
 	
 	@AfterThrowing("pointCut()")
