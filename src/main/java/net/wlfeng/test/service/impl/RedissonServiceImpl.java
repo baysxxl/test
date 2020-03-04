@@ -24,14 +24,14 @@ public class RedissonServiceImpl implements RedissonService {
     @Autowired
     private RedissonClient redissonClient;
 
-    private long EXPIRE_TIME_MILLIS = 300000;
+    private long EXPIRE_TIME_MILLIS = 300;
 
     @Async
     @Override
     public <T> void pushToDelayQueue(String key, T data) {
         RBlockingQueue<T> blockingFairQueue = redissonClient.getBlockingDeque(key);
         RDelayedQueue<T> delayedQueue = redissonClient.getDelayedQueue(blockingFairQueue);
-        delayedQueue.offer(data, EXPIRE_TIME_MILLIS, TimeUnit.MILLISECONDS);
+        delayedQueue.offer(data, EXPIRE_TIME_MILLIS, TimeUnit.SECONDS);
     }
 
     @Async
@@ -39,6 +39,7 @@ public class RedissonServiceImpl implements RedissonService {
     public void takeOfDelayQueue(String key) {
         log.info("======延迟队列:[{}]-消费初始化======", key);
         RBlockingQueue<String> blockingFairQueue = redissonClient.getBlockingDeque(key);
+        RDelayedQueue<String> delayedQueue = redissonClient.getDelayedQueue(blockingFairQueue);
         while (true) {
             try {
                 /**
