@@ -1,10 +1,7 @@
 package net.wlfeng.test.util;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import freemarker.template.Configuration;
@@ -13,7 +10,6 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.dto.CommonResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,10 +48,7 @@ public class PDFUtils {
      * @param dataMap
      * @return
      */
-    public static ResponseEntity<?> export(String outFileName, String ftlPath, Map<String, String> dataMap) {
-        /**
-         * 数据导出(PDF 格式)
-         */
+    public static ResponseEntity<?> export(String outFileName, String ftlPath, Map<String, String> dataMap) throws IOException, TemplateException, DocumentException {
         String htmlStr = PDFUtils.freemarkerRender(dataMap, ftlPath);
         return  exportHtml(outFileName, htmlStr);
     }
@@ -66,30 +59,20 @@ public class PDFUtils {
      * @param html
      * @return
      */
-    public static ResponseEntity<?> exportHtml(String outFileName, String html) {
-        HttpHeaders headers = new HttpHeaders();
-        /**
-         * 数据导出(PDF 格式)
-         */
+    public static ResponseEntity<?> exportHtml(String outFileName, String html) throws IOException, DocumentException {
         byte[] pdfBytes = PDFUtils.createPDF(html);
-        if (pdfBytes != null && pdfBytes.length > 0) {
-            String fileName = outFileName + ".pdf";
-            headers.setContentDispositionFormData("attachment", fileName);
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            return new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
-        }
-        return returnFailed(HttpStatus.NOT_FOUND);
+        return returnResult(outFileName, pdfBytes);
     }
 
     /**
-     * freemarker 引擎渲染 html
+     * freemarker 引擎渲染,主要做参数填充
      *
-     * @param dataMap 传入 html 模板的 Map 数据
-     * @param ftlFilePath html 模板文件相对路径(相对于 resources路径,路径 + 文件名)
+     * @param dataMap 传入模板的 Map 数据
+     * @param ftlFilePath 模板文件相对路径(相对于resources路径,路径 + 文件名)
      *                    例如: "templates/pdf_export_demo.ftl"
-     * @return
+     * @return 渲染后的文件字符串
      */
-    public static String freemarkerRender(Map<String, String> dataMap, String ftlFilePath) {
+    public static String freemarkerRender(Map<String, String> dataMap, String ftlFilePath) throws TemplateException, IOException {
         Writer out = new StringWriter();
         configuration.setDefaultEncoding("UTF-8");
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
@@ -103,8 +86,10 @@ public class PDFUtils {
             return out.toString();
         } catch (IOException e) {
             log.error("===IO异常,异常信息:{}===", e.getMessage());
+            throw e;
         } catch (TemplateException e) {
             log.error("===模板异常,异常信息:{}===", e.getMessage());
+            throw e;
         } finally {
             try {
                 out.close();
@@ -112,15 +97,14 @@ public class PDFUtils {
                 log.error("===IO异常-Writer关闭失败,异常信息:{}===", e.getMessage());
             }
         }
-        return null;
     }
 
     /**
      * 使用 iText 生成 PDF 文档
      *
-     * @param htmlTmpStr html 模板文件字符串
+     * @param htmlStr html文件字符串
      * */
-    public static byte[] createPDF(String htmlTmpStr) {
+    public static byte[] createPDF(String htmlStr) throws IOException, DocumentException {
         ByteArrayOutputStream outputStream = null;
         byte[] result = null;
         try {
@@ -129,14 +113,16 @@ public class PDFUtils {
             PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
             document.open();
             XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
-            worker.parseXHtml(pdfWriter, document, new ByteArrayInputStream(htmlTmpStr.getBytes()),
+            worker.parseXHtml(pdfWriter, document, new ByteArrayInputStream(htmlStr.getBytes()),
                     Charset.forName("UTF-8"), new AsianFontProvider());
             document.close();
             result = outputStream.toByteArray();
         }  catch (DocumentException e) {
             log.error("===文档异常,异常信息:{}===", e.getMessage());
+            throw e;
         } catch (IOException e) {
             log.error("===IO异常,异常信息:{}===", e.getMessage());
+            throw e;
         } finally {
             if(outputStream != null) {
                 try {
@@ -156,6 +142,28 @@ public class PDFUtils {
         return new ResponseEntity<CommonResponse>(CommonResponse.fail(httpStatus.value(), httpStatus.getReasonPhrase()),
                 headers, httpStatus);
     }
+
+    public static ResponseEntity<CommonResponse> returnFailed(HttpStatus httpStatus, CommonResponse result) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        return new ResponseEntity(result, headers, httpStatus);
+    }
+
+    public static ResponseEntity<?> returnResult(String outFileName, byte[] result) {
+        HttpHeaders headers = new HttpHeaders();
+        if (result != null && result.length > 0) {
+            String fileName = new String(outFileName.getBytes(), Charset.forName("iso-8859-1")) + ".pdf";
+            headers.setContentDispositionFormData("attachment", fileName);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            return new ResponseEntity<byte[]>(result, headers, HttpStatus.OK);
+        }
+        return PDFUtils.returnFailed(HttpStatus.NOT_FOUND);
+    }
+
+    public static Font getFont(Integer size) {
+        return new AsianFontProvider().getFont("STSongStd-Light", "UniGB-UCS2-H", size);
+    }
+
 }
 
 /**

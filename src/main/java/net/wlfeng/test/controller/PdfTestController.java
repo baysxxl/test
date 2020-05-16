@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.config.PDFConfig;
 import net.wlfeng.test.dal.domain.User;
-import net.wlfeng.test.dto.CommonResponse;
+import net.wlfeng.test.service.PdfService;
 import net.wlfeng.test.service.UserService;
 import net.wlfeng.test.util.EntityUtils;
 import net.wlfeng.test.util.PDFUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,14 +44,13 @@ public class PdfTestController {
             List<User> userList = userService.selectList(new EntityWrapper<>());
             return exportList(userList);
         }
-
     }
 
     private ResponseEntity exportOne(User user) {
         log.info("导出单个用户,用户id:{}", user.getId());
         try {
             String outFileName = user.getName() + "-" + System.currentTimeMillis();
-            return PDFUtils.export(new String(outFileName.getBytes(), "iso-8859-1"), pdfConfig.getFtlPath(), EntityUtils.entityToMap(user));
+            return PDFUtils.export(outFileName, pdfConfig.getFtlPath(), EntityUtils.entityToMap(user));
         } catch (Exception e) {
             log.error("===导出单个用户异常,异常信息:{}===", e.getMessage());
         }
@@ -68,7 +66,7 @@ public class PdfTestController {
                 String documentHtmlStr = PDFUtils.freemarkerRender(EntityUtils.entityToMap(user), pdfConfig.getFtlPath());
                 result.append(documentHtmlStr);
             }
-            return PDFUtils.exportHtml(new String(outFileName.getBytes(), "iso-8859-1"), result.toString());
+            return PDFUtils.exportHtml(outFileName, result.toString());
         } catch (Exception e) {
             log.error("===导出多个用户异常,异常信息:{}===", e.getMessage());
         }
