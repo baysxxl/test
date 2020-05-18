@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Map;
 
@@ -137,25 +138,22 @@ public class PDFUtils {
     }
 
     public static ResponseEntity<CommonResponse> returnFailed(HttpStatus httpStatus) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<CommonResponse>(CommonResponse.fail(httpStatus.value(), httpStatus.getReasonPhrase()),
-                headers, httpStatus);
+        return returnFailed(httpStatus, CommonResponse.fail(httpStatus.value(), httpStatus.getReasonPhrase()));
     }
 
     public static ResponseEntity<CommonResponse> returnFailed(HttpStatus httpStatus, CommonResponse result) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity(result, headers, httpStatus);
     }
 
-    public static ResponseEntity<?> returnResult(String outFileName, byte[] result) {
+    public static ResponseEntity returnResult(String outFileName, byte[] result) throws UnsupportedEncodingException {
         HttpHeaders headers = new HttpHeaders();
         if (result != null && result.length > 0) {
-            String fileName = new String(outFileName.getBytes(), Charset.forName("iso-8859-1")) + ".pdf";
+            String fileName = URLEncoder.encode(outFileName, "UTF-8") + ".pdf";
             headers.setContentDispositionFormData("attachment", fileName);
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            return new ResponseEntity<byte[]>(result, headers, HttpStatus.OK);
+            return new ResponseEntity(result, headers, HttpStatus.OK);
         }
         return PDFUtils.returnFailed(HttpStatus.NOT_FOUND);
     }
