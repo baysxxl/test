@@ -78,10 +78,10 @@ public class PDFUtils {
         configuration.setDefaultEncoding("UTF-8");
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         try {
-            configuration.setDirectoryForTemplateLoading(new File(ResourceFileUtils.getParent(ftlFilePath)));
+            configuration.setClassForTemplateLoading(new PDFUtils().getClass(), "/");
             configuration.setLogTemplateExceptions(false);
             configuration.setWrapUncheckedExceptions(true);
-            Template template = configuration.getTemplate(ResourceFileUtils.getFileName(ftlFilePath));
+            Template template = configuration.getTemplate(ftlFilePath);
             template.process(dataMap, out);
             out.flush();
             return out.toString();
