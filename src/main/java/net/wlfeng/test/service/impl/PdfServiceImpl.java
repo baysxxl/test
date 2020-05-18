@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class PdfServiceImpl implements PdfService {
 
 
     @Override
-    public ResponseEntity<?> exportCommitment(String outFileName, Map<String, Object> dataMap) {
+    public ResponseEntity<?> exportCommitment(String outFileName, Map<String, Object> dataMap) throws UnsupportedEncodingException {
         ByteArrayOutputStream outputStream = null;
         byte[] result = null;
         try {

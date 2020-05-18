@@ -2,6 +2,7 @@ package net.wlfeng.test.service;
 
 import org.springframework.http.ResponseEntity;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -11,6 +12,6 @@ import java.util.Map;
  */
 public interface PdfService {
 
-    ResponseEntity<?> exportCommitment(String outFileName, Map<String, Object> dataMap);
+    ResponseEntity<?> exportCommitment(String outFileName, Map<String, Object> dataMap) throws UnsupportedEncodingException;
 
 }
