@@ -16,3 +16,20 @@ logging:
     net.wlfeng.test: DEBUG
 pdf:
   ftlPath: templates/user.ftl
+#apache httpclient日志级别，默认的debug级别打印了太多无用日志
+log4j:
+  logger:
+    org:
+      apache:
+        http: info
+    httpclient:
+      wire: info
+test:
+  shortMsg:
+    sendMock: true
+    mockMobile: 12345678910
+ali:
+  ocr:
+    appCode: e*******************7
+    appKey: 1*****2
+    appSecret: K*************************6

@@ -29,7 +29,7 @@ public class PayApi {
     public static UnifiedorderResponse unifiedorder(UnifiedorderRequest request) {
         try {
             Map<String, String> unifiedOrderRes = wxPay.unifiedOrder(EntityUtils.entityToMap(request));
-            UnifiedorderResponse resp = EntityUtils.mapToEntity(unifiedOrderRes, new TypeReference<UnifiedorderResponse>(){});
+            UnifiedorderResponse resp = EntityUtils.mapToEntity(unifiedOrderRes, UnifiedorderResponse.class);
             return resp;
         } catch (Exception e) {
             log.info("===微信统一下单异常,异常信息:{}===", e.getMessage());

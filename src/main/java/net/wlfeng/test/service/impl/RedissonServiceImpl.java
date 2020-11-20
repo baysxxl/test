@@ -42,10 +42,6 @@ public class RedissonServiceImpl implements RedissonService {
         RDelayedQueue<String> delayedQueue = redissonClient.getDelayedQueue(blockingFairQueue);
         while (true) {
             try {
-                /**
-                 * redisson延迟队列不推荐线上使用<br/>
-                 * 当服务器重启之后,queue的take功能会阻塞,直到下一个内容被offer到delayQueue中,阻塞的内容才会一次性全部处理掉
-                 */
                String data = blockingFairQueue.take();
                log.info("======延迟队列:[{}]-获取到数据:{}======", key, data);
             } catch (InterruptedException e) {

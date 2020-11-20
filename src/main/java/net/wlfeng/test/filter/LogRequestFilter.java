@@ -1,7 +1,7 @@
 package net.wlfeng.test.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import net.wlfeng.test.util.RequestUtils;
+import net.wlfeng.test.util.HttpRequestUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -22,7 +22,7 @@ public class LogRequestFilter implements Filter {
         long startTime = System.currentTimeMillis();
         BodyReaderHttpServletRequestWrapper httpServletRequest = new BodyReaderHttpServletRequestWrapper((HttpServletRequest) request);
         // 打印当前的请求路径和参数
-        log.info("======RequestMapping:{},param:{}", httpServletRequest.getRequestURI(), RequestUtils.getParams(httpServletRequest));
+        log.info("======RequestMapping:{},param:{}", httpServletRequest.getRequestURI(), HttpRequestUtils.getParams(httpServletRequest));
         chain.doFilter(httpServletRequest, response);
         log.info("======request end,spend:{}ms======", System.currentTimeMillis() - startTime);
     }

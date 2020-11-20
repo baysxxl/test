@@ -1,5 +1,6 @@
 package net.wlfeng.test.controller;
 
+import com.qiniu.common.QiniuException;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.dto.FileDTO;
 import net.wlfeng.test.service.OssService;
@@ -32,6 +33,13 @@ public class OssController {
 							  @RequestParam("limit") Integer limit) {
 		log.info("获取oss文件列表，请求参数:{},{},{}", filePrefix, delimiter, limit);
 		return ossService.list(filePrefix, delimiter, limit);
+	}
+
+	@ResponseBody
+	@GetMapping("get")
+	public FileDTO get(@RequestParam("fileName") String fileName) throws QiniuException {
+		log.info("获取oss文件，请求参数:{}", fileName);
+		return ossService.get(fileName);
 	}
 
 }

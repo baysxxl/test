@@ -67,4 +67,5 @@ public class ResourceFileUtils {
     public static String getFileName(String relativePath) throws FileNotFoundException {
         return getFile(relativePath).getName();
     }
+
 }
