@@ -2,6 +2,7 @@ package net.wlfeng.test.schedule;
 
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.constant.KeyConstant;
+import net.wlfeng.test.service.QueueService;
 import net.wlfeng.test.service.RedissonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,9 @@ public class InitSchedule {
 
     @Autowired
     private RedissonService redissonService;
+
+    @Autowired
+    private QueueService queueService;
 
     @PostConstruct
     public void init() {

@@ -698,8 +698,7 @@ public class WXPay {
         result.put("package", "prepay_id=" + prepayId);
         if (SignTypeEnum.MD5.equals(this.signTypeEnum)) {
             result.put("signType", WXPayConstants.MD5);
-        }
-        else if (SignTypeEnum.HMACSHA256.equals(this.signTypeEnum)) {
+        } else if (SignTypeEnum.HMACSHA256.equals(this.signTypeEnum)) {
             result.put("signType", WXPayConstants.HMACSHA256);
         }
         result.put("timeStamp", String.valueOf(System.currentTimeMillis() / 1000));
@@ -707,4 +706,4 @@ public class WXPay {
         return result;
     }
 
-} // end class
+}

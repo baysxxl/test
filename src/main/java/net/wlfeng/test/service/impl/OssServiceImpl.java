@@ -1,5 +1,6 @@
 package net.wlfeng.test.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
@@ -41,19 +42,33 @@ public class OssServiceImpl implements OssService {
 	@Override
  	public void upload(String filePath, String fileName) {
 		//默认不指定key的情况下，以文件内容的hash值作为文件名
-		String key = null;
 		String upToken = auth.uploadToken(bucket);
 		try {
-		    Response response = uploadManager.put(filePath, key, upToken);
+		    Response response = uploadManager.put(filePath, fileName, upToken);
 		    //解析上传成功的结果
 		    DefaultPutRet putRet = JSONObject.parseObject(response.bodyString(), DefaultPutRet.class);
-		    System.out.println(putRet);
-		    System.out.println(response.bodyString());
+		    log.info(JSON.toJSONString(putRet));
+			log.info(response.bodyString());
 		} catch (QiniuException ex) {
 		    Response r = ex.response;
-		    System.err.println(r.toString());
+		    log.error(r.toString());
 		}
-		
+	}
+
+	@Override
+	public void upload(byte[] data, String fileName) {
+		//默认不指定key的情况下，以文件内容的hash值作为文件名
+		String upToken = auth.uploadToken(bucket);
+		try {
+			Response response = uploadManager.put(data, fileName, upToken);
+			//解析上传成功的结果
+			DefaultPutRet putRet = JSONObject.parseObject(response.bodyString(), DefaultPutRet.class);
+			log.info(JSON.toJSONString(putRet));
+			log.info(response.bodyString());
+		} catch (QiniuException ex) {
+			Response r = ex.response;
+			log.error(r.toString());
+		}
 	}
 
 	@Override
@@ -74,5 +89,20 @@ public class OssServiceImpl implements OssService {
 		}
 		return fileList;
 	}
-	
+
+	@Override
+	public FileDTO get(String fileName) {
+		FileDTO fileDto = null;
+		try {
+			FileInfo fileInfo = bucketManager.stat(bucket, fileName);
+			fileDto = new FileDTO();
+			fileDto.setFileName(fileName);
+			fileDto.setUrl(domain + fileName);
+			fileDto.setFileSize(OssUtils.bytesTokbOrmb(fileInfo.fsize));
+		} catch (QiniuException e) {
+			log.error(e.getMessage());
+		}
+		return fileDto;
+	}
+
 }

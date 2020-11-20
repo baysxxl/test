@@ -1,5 +1,6 @@
 package net.wlfeng.test.service;
 
+import com.qiniu.common.QiniuException;
 import net.wlfeng.test.dto.FileDTO;
 
 import java.util.List;
@@ -17,6 +18,13 @@ public interface OssService {
 	 * @param fileName 上传后的文件名
 	 */
 	void upload(String filePath, String fileName);
+
+	/**
+	 * 上传文件
+	 * @param data 上传的文件字节码
+	 * @param fileName 上传后的文件名
+	 */
+	void upload(byte[] data, String fileName);
 	
 	/**
 	 * 获取文件列表
@@ -26,5 +34,12 @@ public interface OssService {
 	 * @return
 	 */
 	List<FileDTO> list(String filePrefix, String delimiter, Integer limit);
+
+	/**
+	 * 获取文件
+	 * @param fileName 文件名
+	 * @return
+	 */
+	FileDTO get(String fileName);
 
 }

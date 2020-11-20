@@ -11,9 +11,13 @@ import java.io.Serializable;
  */
 @Data
 public class CommonResponse<T> implements Serializable {
+
     private boolean success;
+
     private int code;
+
     private String msg;
+
     private T data;
 
     public static final Integer SUCCESS_CODE = 200;
