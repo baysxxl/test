@@ -81,19 +81,14 @@ class AliOcrIdCardResultDTO {
 
     /*======正面信息======*/
     /**
-     * 住址
+     * 姓名
      */
-    private String address;
+    private String name;
 
     /**
      * 生日
      */
     private Date birth;
-
-    /**
-     * 姓名
-     */
-    private String name;
 
     /**
      * 民族
@@ -109,6 +104,11 @@ class AliOcrIdCardResultDTO {
      * 性别
      */
     private String sex;
+
+    /**
+     * 住址
+     */
+    private String address;
 
     /*======背面信息======*/
     /**
@@ -129,7 +129,7 @@ class AliOcrIdCardResultDTO {
     public static AliOcrIdCardResultDTO buildEntity(String idCardInfo, boolean isFace) {
         JSONObject idCardInfoJson = JSONObject.parseObject(idCardInfo);
         AliOcrIdCardResultDTO resultDTO = new AliOcrIdCardResultDTO();
-        resultDTO.setRequestId("request_id");
+        resultDTO.setRequestId(idCardInfoJson.getString("request_id"));
         resultDTO.setSuccess(idCardInfoJson.getBoolean("success"));
         if (idCardInfoJson.getBoolean("success")) {
             if (isFace) {
