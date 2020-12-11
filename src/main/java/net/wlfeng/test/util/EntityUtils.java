@@ -18,13 +18,13 @@ public class EntityUtils {
      * @param object
      * @return
      */
-    public static <T> Map<String, T> entityToMap(Object object) {
+    public static Map<String, String> entityToMap(Object object) {
         if (object == null) {
             return null;
         }
-        Map<String, T> map = null;
+        Map<String, String> map = null;
         try {
-            map = JSONObject.parseObject(JSONObject.toJSONString(object), new TypeReference<Map<String, T>>(){});
+            map = JSONObject.parseObject(JSONObject.toJSONString(object), new TypeReference<Map<String, String>>(){});
         } catch (Exception e) {
             log.error("===实体类转map异常,异常信息:{}===", e.getMessage());
         }
