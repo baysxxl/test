@@ -6,10 +6,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author weilingfeng
  * @date 2020/11/20 11:20

@@ -93,10 +93,8 @@ public class UnifiedorderRequest {
     @NotBlank
     private String notify_url;
     /**
-     * 交易类型,
-     * JSAPI -JSAPI支付
-     * NATIVE -Native支付
-     * APP -APP支付
+     * 交易类型
+     * {@link net.wlfeng.test.sdk.wx.enums.TradeTypeEnum}
      */
     @NotBlank
     private String trade_type;
