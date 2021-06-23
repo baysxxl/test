@@ -44,7 +44,7 @@ public class ControllerAscept {
 			log.debug("======Response:[{}]", JSON.toJSONString(response, SerializerFeature.WriteMapNullValue));
 		}
 		// 打印请求耗时
-		log.info("======Request end, spend times : [{}ms]======", System.currentTimeMillis() - startTime.get());
+		log.info("======Request end,spend[{}ms]======", System.currentTimeMillis() - startTime.get());
 		startTime.remove();
 	}
 	
