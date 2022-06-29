@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author weilingfeng
  * @date 2019/11/26 10:03
- * @description redis相关功能测试controller
+ * @description redis队列相关功能测试controller
  */
 @Slf4j
 @Controller
