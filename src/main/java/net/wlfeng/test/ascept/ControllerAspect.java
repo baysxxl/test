@@ -15,7 +15,7 @@ import java.util.Arrays;
 @Aspect
 @Slf4j
 @Component
-public class ControllerAscept {
+public class ControllerAspect {
 
 	// 用来记录请求进入的时间，防止多线程时出错，这里用了ThreadLocal
 	private static ThreadLocal<Long> startTime = new ThreadLocal<>();
@@ -29,7 +29,7 @@ public class ControllerAscept {
 		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpServletRequest request = servletRequestAttributes.getRequest();
 		// 打印当前的请求路径和参数，如果需要打印其他的信息可以到request中去拿
-		log.info("===Request,path:{},param:{}===",request.getRequestURI(), Arrays.toString(joinPoint.getArgs()));
+		log.info("===ControllerAspect-start,path:{},param:{}===",request.getRequestURI(), Arrays.toString(joinPoint.getArgs()));
 	}
 	
 	@After("pointCut()")
@@ -41,10 +41,10 @@ public class ControllerAscept {
 	public void afterReturning(Object response) {
 		if (log.isDebugEnabled()) {
 			// 打印返回值信息
-			log.debug("======Response:[{}]", JSON.toJSONString(response, SerializerFeature.WriteMapNullValue));
+			log.debug("======ControllerAspect-Response:[{}]", JSON.toJSONString(response, SerializerFeature.WriteMapNullValue));
 		}
 		// 打印请求耗时
-		log.info("======Request end,spend[{}ms]======", System.currentTimeMillis() - startTime.get());
+		log.info("======ControllerAspect-end,spend[{}ms]======", System.currentTimeMillis() - startTime.get());
 		startTime.remove();
 	}
 	

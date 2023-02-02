@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     CommonResponse handleException(Exception e){
-        log.error("===系统异常,异常信息:{}===", e.getMessage());
+        log.error("===系统异常,异常信息:{}===", e);
         return CommonResponse.fail(e.getMessage());
     }
 
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     CommonResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
-        log.error("===数据校验异常,异常信息:{}===", e.getMessage());
+        log.error("===数据校验异常,异常信息:{}===", e);
         return CommonResponse.fail(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 }

@@ -58,20 +58,20 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>2.2.0</version>
+            <version>3.5.2</version>
         </dependency>
         <!-- pagehelper :分页插件 -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>5.1.2</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.pagehelper</groupId>-->
+<!--            <artifactId>pagehelper</artifactId>-->
+<!--            <version>5.1.2</version>-->
+<!--        </dependency>-->
         <!-- pagehelper的依赖包:jsqlparser -->
-        <dependency>
-            <groupId>com.github.jsqlparser</groupId>
-            <artifactId>jsqlparser</artifactId>
-            <version>0.9.5</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.jsqlparser</groupId>-->
+<!--            <artifactId>jsqlparser</artifactId>-->
+<!--            <version>0.9.5</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -100,6 +100,11 @@
             <artifactId>xmlworker</artifactId>
             <version>5.5.13</version>
         </dependency>
+        <dependency>
+            <groupId>net.sf.cssbox</groupId>
+            <artifactId>cssbox</artifactId>
+            <version>4.14</version>
+        </dependency>
         <!-- freemarker pdf end -->
 
         <!-- Excel start-->
@@ -117,6 +122,11 @@
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-annotation</artifactId>
             <version>4.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.2.7</version>
         </dependency>
         <!-- Excel end-->
 
@@ -155,11 +165,11 @@
         <!-- 百度 ocr end -->
 
         <!-- rocketmq start -->
-        <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-spring-boot-starter</artifactId>
-            <version>2.2.2</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.rocketmq</groupId>-->
+<!--            <artifactId>rocketmq-spring-boot-starter</artifactId>-->
+<!--            <version>2.2.2</version>-->
+<!--        </dependency>-->
         <!-- rocketmq end -->
 
         <dependency>
@@ -171,6 +181,24 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.8.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.1</version>
         </dependency>
     </dependencies>
 

@@ -1,11 +1,10 @@
 package net.wlfeng.test.service.impl;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.dal.dao.UserMapper;
 import net.wlfeng.test.dal.domain.User;
 import net.wlfeng.test.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**

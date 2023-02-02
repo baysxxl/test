@@ -1,6 +1,7 @@
 package net.wlfeng.test.util;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.codec.Base64;
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
@@ -11,11 +12,13 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.dto.CommonResponse;
+import org.fit.cssbox.demo.ImageRenderer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import java.awt.*;
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -111,7 +114,7 @@ public class PDFUtils {
         byte[] result = null;
         try {
             outputStream = new ByteArrayOutputStream();
-            Document document = new Document();
+            Document document = new Document(new RectangleReadOnly(842F, 595F));
             PdfWriter pdfWriter = PdfWriter.getInstance(document, outputStream);
             document.open();
             XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
@@ -136,6 +139,18 @@ public class PDFUtils {
             }
         }
         return result;
+    }
+
+    public static void transferHtml2Image(String htmlFilePath, String imageFilePath) {
+        ImageRenderer render = new ImageRenderer();
+        render.setWindowSize(new Dimension(842, 595), false);
+        String url = new File(htmlFilePath).toURI().toString();
+        try {
+            FileOutputStream out = new FileOutputStream(imageFilePath);
+            render.renderURL(url, out, ImageRenderer.Type.PNG);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static ResponseEntity<CommonResponse> returnFailed(HttpStatus httpStatus) {

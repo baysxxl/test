@@ -1,6 +1,6 @@
 package net.wlfeng.test.dal.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import net.wlfeng.test.dal.domain.User;
 import org.apache.ibatis.annotations.Param;
 

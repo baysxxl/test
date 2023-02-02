@@ -22,8 +22,8 @@ public class LogRequestFilter implements Filter {
         long startTime = System.currentTimeMillis();
         BodyReaderHttpServletRequestWrapper httpServletRequest = new BodyReaderHttpServletRequestWrapper((HttpServletRequest) request);
         // 打印当前的请求路径和参数
-        log.info("======RequestMapping:{},param:{}", httpServletRequest.getRequestURI(), HttpRequestUtils.getParams(httpServletRequest));
+        log.info("======RequestMapping-start,path:{},param:{}", httpServletRequest.getRequestURI(), HttpRequestUtils.getParams(httpServletRequest));
         chain.doFilter(httpServletRequest, response);
-        log.info("======request end,spend:{}ms======", System.currentTimeMillis() - startTime);
+        log.info("======RequestMapping-end,spend:{}ms======", System.currentTimeMillis() - startTime);
     }
 }

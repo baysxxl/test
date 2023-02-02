@@ -33,7 +33,7 @@ public class MybatisPlusTest {
         user1.setAge(18);
         user1.setName("张三");
         user1.setEmail("zhangsan@qq.com");
-        boolean serviceInsertResult = userService.insert(user1);
+        boolean serviceInsertResult = userService.save(user1);
         System.out.println("service insert result:" + serviceInsertResult);
         System.out.println("service insert id:" + user1.getId());
 

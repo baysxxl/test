@@ -1,7 +1,7 @@
 package net.wlfeng.test.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.dal.domain.User;
 import net.wlfeng.test.dto.CommonResponse;
@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,7 +42,7 @@ public class MybatisPlusTestController {
     @GetMapping("query")
     public CommonResponse<UserDTO> queryUser(@RequestParam("id") Integer id) {
         log.info("===进入查询用户信息controller,请求参数:{}===", id);
-        return CommonResponse.success(userService.selectById(id));
+        return CommonResponse.success(userService.getById(id));
     }
 
     /**
@@ -55,9 +53,11 @@ public class MybatisPlusTestController {
     @GetMapping("queryOne")
     public CommonResponse<UserDTO> queryUserOne(@RequestParam("name") String name) {
         log.info("===进入查询最新一条用户信息controller,请求参数:{}===", name);
-        EntityWrapper wrapper = new EntityWrapper();
-        wrapper.eq("name", name).orderBy("id").last("desc limit 1");
-        return CommonResponse.success(userService.selectOne(wrapper));
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("name", name);
+        wrapper.orderByDesc("id");
+        wrapper.last("desc limit 1");
+        return CommonResponse.success(userService.getOne(wrapper));
     }
 
     /**
@@ -76,7 +76,7 @@ public class MybatisPlusTestController {
             if (lock.tryLock(0, 5, TimeUnit.SECONDS)) {
                 User user = new User();
                 BeanUtils.copyProperties(userDTO, user);
-                response = CommonResponse.success(userService.insert(user));
+                response = CommonResponse.success(userService.save(user));
             } else {
                 response = CommonResponse.fail("请勿重新请求");
             }

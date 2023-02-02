@@ -2,7 +2,7 @@ package net.wlfeng.test.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.dal.domain.BankCode;
 import net.wlfeng.test.dto.AliBankInfoDTO;
@@ -42,7 +42,7 @@ public class BankCodeServiceTest {
         String file = "C:\\Users\\86176\\Desktop\\bankInfo-master\\银行信息\\index.json";
         JSONObject json = JSON.parseObject(JSONUtils.readJsonFile(file));
 
-        List<BankCode> bankCodeList = bankCodeService.selectList(new EntityWrapper<BankCode>());
+        List<BankCode> bankCodeList = bankCodeService.list(new QueryWrapper<BankCode>());
         for (BankCode bankCode: bankCodeList) {
             if (StringUtils.isBlank(bankCode.getBank())) {
                 AliBankInfoDTO bankInfo = AliBankUtils.queryCardBankInfo(bankCode.getBankNumber());
@@ -60,7 +60,7 @@ public class BankCodeServiceTest {
         String file = "C:\\Users\\86176\\Desktop\\bankInfo-master\\银行信息\\bank.json";
         JSONObject json = JSON.parseObject(JSONUtils.readJsonFile(file));
 
-        List<BankCode> bankCodeList = bankCodeService.selectList(new EntityWrapper<BankCode>());
+        List<BankCode> bankCodeList = bankCodeService.list(new QueryWrapper<>());
         for (BankCode bankCode: bankCodeList) {
             if (StringUtils.isBlank(bankCode.getBankCode()) && StringUtils.isNotBlank(bankCode.getBankLogo())) {
                 for (Map.Entry<String, Object> entry: json.entrySet()) {
@@ -83,7 +83,7 @@ public class BankCodeServiceTest {
 
     @Test
     public void bankLogoTest() {
-        List<BankCode> bankCodeList = bankCodeService.selectList(new EntityWrapper<BankCode>());
+        List<BankCode> bankCodeList = bankCodeService.list(new QueryWrapper<>());
         String logo_prefix = "bank/logo/";
         for (BankCode bankCode: bankCodeList) {
             if (StringUtils.isBlank(bankCode.getBankLogo())) {

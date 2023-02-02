@@ -1,6 +1,6 @@
 package net.wlfeng.test.service.impl;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.dal.dao.BankCodeMapper;
 import net.wlfeng.test.dal.domain.BankCode;

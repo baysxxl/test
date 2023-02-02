@@ -1,6 +1,5 @@
 package net.wlfeng.test.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.dal.domain.User;
 import net.wlfeng.test.dto.UserExcelDTO;
@@ -34,7 +33,7 @@ public class ExcelTestController {
     public void exportExcel(HttpServletRequest request, HttpServletResponse response) {
         try {
             //模拟从数据库获取需要导出的数据
-            List<User> userList = userService.selectList(new EntityWrapper<>());
+            List<User> userList = userService.list();
             List<UserExcelDTO> userExcelDtosList = new ArrayList<>(userList.size());
             for (User user: userList) {
                 UserExcelDTO userExcelDto = new UserExcelDTO();

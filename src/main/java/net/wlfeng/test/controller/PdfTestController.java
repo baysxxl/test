@@ -1,10 +1,8 @@
 package net.wlfeng.test.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.wlfeng.test.config.PDFConfig;
 import net.wlfeng.test.dal.domain.User;
-import net.wlfeng.test.service.PdfService;
 import net.wlfeng.test.service.UserService;
 import net.wlfeng.test.util.EntityUtils;
 import net.wlfeng.test.util.PDFUtils;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,13 +34,24 @@ public class PdfTestController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping(value = "exportTest", method = RequestMethod.GET, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity exportTest(@RequestParam("type") Integer type, @RequestParam("id") Integer id) {
+        try {
+            String outFileName = "test";
+            return PDFUtils.export(outFileName, pdfConfig.getFtlPath(), new HashMap<>());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "export", method = RequestMethod.GET, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity export(@RequestParam("type") Integer type, @RequestParam("id") Integer id) {
         if (Integer.valueOf(1).equals(type)) {
-            User user = userService.selectOne(new EntityWrapper<User>().eq("id", id));
+            User user = userService.getById(id);
             return exportOne(user);
         } else {
-            List<User> userList = userService.selectList(new EntityWrapper<>());
+            List<User> userList = userService.list();
             return exportList(userList);
         }
     }
