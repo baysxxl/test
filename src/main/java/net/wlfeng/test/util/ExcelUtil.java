@@ -112,7 +112,7 @@ public class ExcelUtil {
         toRow.setHeight(oldRow.getHeight());
         for (Iterator cellIt = oldRow.cellIterator(); cellIt.hasNext();) {
             XSSFCell tmpCell = (XSSFCell) cellIt.next();
-            XSSFCell newCell = toRow.createCell(tmpCell.getColumnIndex());
+            XSSFCell newCell = toRow.createCell(tmpCell.getColumnIndex(), tmpCell.getCellType());
             copyCell(wb, tmpCell, newCell);
         }
     }
@@ -134,7 +134,6 @@ public class ExcelUtil {
         }
         // 不同数据类型处理
         CellType fromCellType = fromCell.getCellType();
-        toCell.setCellType(fromCellType);
         if (fromCellType == CellType.NUMERIC) {
             if (DateUtil.isCellDateFormatted(fromCell)) {
                 toCell.setCellValue(fromCell.getDateCellValue());
