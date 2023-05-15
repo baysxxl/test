@@ -1,14 +1,20 @@
 package net.wlfeng.test.util;
 
+import cn.afterturn.easypoi.util.PoiCellUtil;
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import net.wlfeng.test.model.RCell;
+import net.wlfeng.test.model.RRow;
+import net.wlfeng.test.model.RSheet;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @description: 多个Excel合并Sheet
@@ -17,13 +23,17 @@ import java.util.List;
  */
 public class ExcelUtil {
 
-    public static void main(String[] args) {
-        List<String> list = Arrays.asList(
+    public static void main(String[] args) throws IOException {
+        /*List<String> list = Arrays.asList(
                 new File("D:\\test\\a.xlsx").toString(),
                 new File("D:\\test\\b.xlsx").toString()
         );
         mergexcel(list,"D:\\test","ab.xlsx");
-        System.out.println("done");
+        System.out.println("done");*/
+
+        InputStream in = new FileInputStream("D:\\work\\临时文件\\产出报表.xlsx");
+        RSheet rSheet = parseExcelDataStructure(new XSSFWorkbook(in));
+        System.out.println(JSON.toJSONString(rSheet));
     }
 
     /**
@@ -154,4 +164,82 @@ public class ExcelUtil {
             // 不处理
         }
     }
+
+    /**
+     * 解析Excel数据和结构
+     * @param wb
+     * @return
+     */
+    private static RSheet parseExcelDataStructure(XSSFWorkbook wb) {
+        Sheet sheet = wb.getSheetAt(0);
+        List<RRow> headList = new ArrayList<>();
+        List<RRow> dataList = new ArrayList<>();
+
+        // 获取头
+        List<Map<Integer,String>> headMapList = new ArrayList<>();
+        // 默认第一行为头
+        Row titleRow = sheet.getRow(0);
+        //构建头，用来获取数据的key
+        buildHead(sheet, headMapList, titleRow);
+
+        RRow headRow = new RRow();
+        for (int i = 0; i < titleRow.getLastCellNum(); i++) {
+            RCell cell = PoiUtil.getCell(sheet, titleRow, i);
+            if (cell != null) {
+                headRow.getCellList().add(cell);
+            }
+        }
+        headList.add(headRow);
+
+        // 获取数据
+        Row row;
+        for (int i = 1; i < sheet.getLastRowNum(); i++) {
+            row = sheet.getRow(i);
+            RRow dataRow = new RRow();
+            for (int j =0; j < row.getLastCellNum();j++){
+                //组件渲染表格的数据集
+                RCell cell = PoiUtil.getCell(sheet, row, j);
+                if (cell != null) {
+                    dataRow.getCellList().add(cell);
+                }
+            }
+            if (dataRow != null) {
+                dataList.add(dataRow);
+            }
+        }
+        RSheet rSheetTable = new RSheet();
+        rSheetTable.setMaxRowNum(sheet.getLastRowNum());
+        rSheetTable.setMaxColNum(titleRow.getLastCellNum());
+        rSheetTable.setHeadList(headList);
+        rSheetTable.setDataList(dataList);
+        return rSheetTable;
+    }
+
+    private static void buildHead(Sheet sheet, List<Map<Integer, String>> headMapList, Row title) {
+        Map<Integer, String>  head = new HashMap<>();
+        for (int i = 0; i< title.getLastCellNum(); i++){
+            //判断是否是合并单元格
+            boolean mergedRegion = PoiCellUtil.isMergedRegion(sheet, title.getRowNum(), i);
+            String value=null;
+            if(mergedRegion){
+                value= PoiCellUtil.getMergedRegionValue(sheet, title.getRowNum(), i);
+            }else {
+                value =PoiCellUtil.getCellValue(title.getCell(i));
+            }
+            if(headMapList.size()==0){
+                head.put(i, value);
+            }else {
+                String preLine = headMapList.get(headMapList.size() - 1).get(i);
+                //合并单元格并且不是首行就取上面一行的数据作为表头
+                if(mergedRegion&&!PoiUtil.isMergedRegionFirstRow(sheet, title.getRowNum(), i)){
+                    head.put(i, preLine);
+                }else {
+                    //多级表头自动拼上上级表头
+                    head.put(i,(StrUtil.isEmpty(preLine)?"": preLine +"_")+ value);
+                }
+            }
+        }
+        headMapList.add(head);
+    }
+
 }
